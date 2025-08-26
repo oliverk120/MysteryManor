@@ -1,6 +1,18 @@
 import { Target } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function CaseFilePage() {
+  const [, setLocation] = useLocation();
+
+  const handleEnterBriefing = () => {
+    const pwd = prompt("Enter password");
+    if (pwd === "bedroom") {
+      setLocation("/briefing-room");
+    } else {
+      alert("Incorrect password");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <div className="max-w-2xl mx-auto p-6 space-y-8">
@@ -70,6 +82,15 @@ export default function CaseFilePage() {
             </ul>
           </article>
         </section>
+
+        <div className="pt-4">
+          <button
+            onClick={handleEnterBriefing}
+            className="px-4 py-2 bg-red-600 text-white rounded"
+          >
+            Enter Briefing Room
+          </button>
+        </div>
       </div>
     </div>
   );
