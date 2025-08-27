@@ -50,7 +50,6 @@ export default {
         paper: "var(--paper)",
         ink: "var(--ink)",
         graphite: "var(--graphite)",
-        "stamp-red": "var(--stamp-red)",
         "staple-gray": "var(--staple-gray)",
         "tab-blue": "var(--tab-blue)",
         cleared: "var(--cleared)",

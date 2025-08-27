@@ -96,7 +96,7 @@ function PhaseChain({ phases, current }: { phases: string[]; current: number }) 
         <div
           key={phase}
           className={`px-4 py-2 rounded-full text-sm font-medium border ${
-            idx === current ? "bg-red-600 text-white border-red-600" : "bg-gray-200 text-gray-700 border-gray-200"
+            idx === current ? "bg-blue-600 text-white border-blue-600" : "bg-gray-200 text-gray-700 border-gray-200"
           }`}
         >
           {phase}
@@ -159,7 +159,7 @@ export default function BriefingRoomPage() {
     const remaining = suspects.filter((s) => s.id !== eliminated);
     return (
       <div className="min-h-screen bg-white text-gray-900 p-8">
-        <header className="border-b-4 border-red-600 pb-4 mb-6">
+        <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <PhaseChain phases={phases} current={phaseIdx} />
@@ -209,7 +209,7 @@ export default function BriefingRoomPage() {
   if (hours <= 0 && chiefConsulted) {
     return (
       <div className="min-h-screen bg-white text-gray-900 p-8">
-        <header className="border-b-4 border-red-600 pb-4 mb-6">
+        <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <PhaseChain phases={phases} current={phaseIdx} />
@@ -227,11 +227,12 @@ export default function BriefingRoomPage() {
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
                 <button
+
                   onClick={() => {
                     setEliminated(s.id);
                     setHours(6);
                   }}
-                  className="px-2 py-1 bg-red-600 text-white rounded"
+                  className="px-2 py-1 bg-blue-600 text-white rounded"
                 >
                   Eliminate
                 </button>
@@ -250,13 +251,13 @@ export default function BriefingRoomPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 p-8">
-      <header className="border-b-4 border-red-600 pb-4 mb-6">
+      <header className="border-b-4 border-blue-600 pb-4 mb-6">
         <h1 className="text-4xl font-bold">Briefing Room</h1>
       </header>
       <PhaseChain phases={phases} current={phaseIdx} />
       {hours <= 0 && !chiefConsulted && (
         <div className="flex justify-center mb-4">
-          <button onClick={handleChief} className="px-6 py-3 bg-red-600 text-white rounded-md">
+          <button onClick={handleChief} className="px-6 py-3 bg-blue-600 text-white rounded-md">
             Take findings to the police chief
           </button>
         </div>
