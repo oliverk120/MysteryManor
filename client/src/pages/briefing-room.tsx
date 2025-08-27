@@ -17,6 +17,9 @@ import {
 
 const vegaPic = "../pics/vega.png"; // image supplied separately
 
+const casefileClasses =
+  "bg-amber-50 border-2 border-amber-200 p-4 rounded-sm shadow-md space-y-2";
+
 interface Suspect {
   id: string;
   name: string;
@@ -277,28 +280,9 @@ export default function BriefingRoomPage() {
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <StageBreadcrumb current={stageIdx} />
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-          <div className="text-center">
-            <AspectRatio ratio={1} className="w-48 mx-auto">
-              <img
-                src={grahamPic}
-                alt="Graham Steele"
-                className="object-cover rounded w-full h-full"
-              />
-            </AspectRatio>
-            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-          </div>
-          <AspectRatio ratio={4 / 3} className="w-full max-w-md">
-            <img
-              src={scenePic}
-              alt="Crime scene"
-              className="object-cover rounded w-full h-full"
-            />
-          </AspectRatio>
-        </div>
         {chiefMessage && (
-          <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
-            <AspectRatio ratio={1} className="w-16 shrink-0">
+          <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+            <AspectRatio ratio={1} className="w-24 shrink-0">
               <img
                 src={vegaPic}
                 alt="Duty Chief Vega"
@@ -308,6 +292,21 @@ export default function BriefingRoomPage() {
             <p>{chiefMessage}</p>
           </div>
         )}
+        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
+          <div className="text-center">
+            <img
+              src={grahamPic}
+              alt="Graham Steele"
+              className="h-48 w-48 object-cover rounded"
+            />
+            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
+          </div>
+          <img
+            src={scenePic}
+            alt="Crime scene"
+            className="h-48 object-cover rounded"
+          />
+        </div>
         <div className="p-4 border rounded-md mb-6">
           You have eliminated {eliminatedName}. Vega grants you six extra hours to follow up on any revealed clues.
         </div>
@@ -319,7 +318,7 @@ export default function BriefingRoomPage() {
             const highlight =
               questioned === s.id ? justRevealed : { clues: [], followUps: [] };
             return (
-              <div key={s.id} className="border p-4 rounded-md space-y-2">
+              <div key={s.id} className={casefileClasses}>
                 <AspectRatio ratio={1} className="w-full">
                   <img
                     src={s.image}
@@ -398,28 +397,9 @@ export default function BriefingRoomPage() {
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <StageBreadcrumb current={stageIdx} />
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-          <div className="text-center">
-            <AspectRatio ratio={1} className="w-48 mx-auto">
-              <img
-                src={grahamPic}
-                alt="Graham Steele"
-                className="object-cover rounded w-full h-full"
-              />
-            </AspectRatio>
-            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-          </div>
-          <AspectRatio ratio={4 / 3} className="w-full max-w-md">
-            <img
-              src={scenePic}
-              alt="Crime scene"
-              className="object-cover rounded w-full h-full"
-            />
-          </AspectRatio>
-        </div>
         {chiefMessage && (
-          <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
-            <AspectRatio ratio={1} className="w-16 shrink-0">
+          <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+            <AspectRatio ratio={1} className="w-24 shrink-0">
               <img
                 src={vegaPic}
                 alt="Duty Chief Vega"
@@ -429,12 +409,27 @@ export default function BriefingRoomPage() {
             <p>{chiefMessage}</p>
           </div>
         )}
+        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
+          <div className="text-center">
+            <img
+              src={grahamPic}
+              alt="Graham Steele"
+              className="h-48 w-48 object-cover rounded"
+            />
+            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
+          </div>
+          <img
+            src={scenePic}
+            alt="Crime scene"
+            className="h-48 object-cover rounded"
+          />
+        </div>
         <div className="mb-6">Select a suspect to eliminate:</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {suspects.map((s) => {
             const used = revealed[s.id];
             return (
-              <div key={s.id} className="border p-4 rounded-md space-y-2">
+              <div key={s.id} className={casefileClasses}>
                 <AspectRatio ratio={1} className="w-full">
                   <img
                     src={s.image}
@@ -473,35 +468,9 @@ export default function BriefingRoomPage() {
         <h1 className="text-4xl font-bold">Briefing Room</h1>
       </header>
       <StageBreadcrumb current={stageIdx} />
-      <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-        <div className="text-center">
-          <AspectRatio ratio={1} className="w-48 mx-auto">
-            <img
-              src={grahamPic}
-              alt="Graham Steele"
-              className="object-cover rounded w-full h-full"
-            />
-          </AspectRatio>
-          <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-        </div>
-        <AspectRatio ratio={4 / 3} className="w-full max-w-md">
-          <img
-            src={scenePic}
-            alt="Crime scene"
-            className="object-cover rounded w-full h-full"
-          />
-        </AspectRatio>
-      </div>
-      {hours <= 0 && !chiefConsulted && (
-        <div className="flex justify-center mb-4">
-          <button onClick={handleChief} className="px-6 py-3 bg-blue-600 text-white rounded-md">
-            Take findings to the police chief
-          </button>
-        </div>
-      )}
       {chiefMessage && (
-        <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
-          <AspectRatio ratio={1} className="w-16 shrink-0">
+        <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+          <AspectRatio ratio={1} className="w-24 shrink-0">
             <img
               src={vegaPic}
               alt="Duty Chief Vega"
@@ -511,13 +480,35 @@ export default function BriefingRoomPage() {
           <p>{chiefMessage}</p>
         </div>
       )}
+      <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
+        <div className="text-center">
+          <img
+            src={grahamPic}
+            alt="Graham Steele"
+            className="h-48 w-48 object-cover rounded"
+          />
+          <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
+        </div>
+        <img
+          src={scenePic}
+          alt="Crime scene"
+          className="h-48 object-cover rounded"
+        />
+      </div>
+      {hours <= 0 && !chiefConsulted && (
+        <div className="flex justify-center mb-4">
+          <button onClick={handleChief} className="px-6 py-3 bg-blue-600 text-white rounded-md">
+            Take findings to the police chief
+          </button>
+        </div>
+      )}
       <div className="mb-4 font-semibold">Hours Remaining: {hours}</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {suspects.map((s) => {
           const used = revealed[s.id];
           const allRevealed = used.length >= s.clues.length;
           return (
-            <div key={s.id} className="border p-4 rounded-md space-y-2">
+            <div key={s.id} className={casefileClasses}>
               <AspectRatio ratio={1} className="w-full">
                 <img
                   src={s.image}
