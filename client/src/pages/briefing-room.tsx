@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AspectRatio } from "../components/ui/aspect-ratio";
-import coverPic from "../pics/cover-placeholder.svg";
+import coverPic from "../pics/breakingnews.png";
 import grahamPic from "../pics/grahamsteele.png";
 import scenePic from "../pics/scene.png";
 import evelynPic from "../pics/evelyn.png";
@@ -38,12 +38,12 @@ const suspects: Suspect[] = [
     clues: [
       "Patterned surveillance drives: ALPR + neighborhood cams log six late-night passes over 3 weeks, including two loops the night before.",
       "Spare-key access plan: Locksmith invoice (3 months ago) shows she commissioned a copy of the patio slider key; smart-lock history shows manual latch opens on two prior nights at odd hours.",
-      "Burner \"watcher\" account: A no-posts IG/TikTok handle (tied to her recovery phone) follows Cath + mutuals and saves geo-tagged posts near Graham’s street on dates matching the drive-bys.",
-      "\"Evidence box\" in trunk: Shoebox marked \"Keep\" with prenup/bank printouts and night photos of the house taken from the street (printed, dated).",
-      "Housekeeper pretext call: She phoned the housekeeper from an alternate number asking about cleaning start times and \"which doors you leave latched in the morning\" two days before the murder.",
+      'Burner "watcher" account: A no-posts IG/TikTok handle (tied to her recovery phone) follows Cath + mutuals and saves geo-tagged posts near Graham’s street on dates matching the drive-bys.',
+      '"Evidence box" in trunk: Shoebox marked "Keep" with prenup/bank printouts and night photos of the house taken from the street (printed, dated).',
+      'Housekeeper pretext call: She phoned the housekeeper from an alternate number asking about cleaning start times and "which doors you leave latched in the morning" two days before the murder.',
       "Sister-condo trail: Fob + lobby cams place her 8:47 p.m. → ~9:20 a.m. (murder night).",
       "Phone stays put: Her phone connects to sister’s Wi-Fi all night; no motion until morning.",
-      "Bar receipt context: \"Two glasses\" receipt is two nights earlier at an unusual bar for Graham; bartender can’t ID Evelyn—suggests suspicion, not placement.",
+      'Bar receipt context: "Two glasses" receipt is two nights earlier at an unusual bar for Graham; bartender can’t ID Evelyn—suggests suspicion, not placement.',
     ],
     followUps: [
       "One pass the night before shows two slow loops and a brief hazard-light stop near the driveway. (↑ suspicion)",
@@ -177,7 +177,7 @@ export default function BriefingRoomPage() {
   const handleChief = () => {
     setChiefConsulted(true);
     setChiefMessage(
-      'Duty Chief Vega: "Hmm good start, but it\'s not enough, I can give you another 6 hours, but after that I need you to eliminate at least one of these suspects so that we can focus our investigation. We don\'t have a lot of time, Cath!"'
+      "Duty Chief Vega: \"Hmm good start, but it's not enough, I can give you another 6 hours, but after that I need you to eliminate at least one of these suspects so that we can focus our investigation. We don't have a lot of time, Cath!\"",
     );
     setHours(6);
   };
@@ -356,7 +356,8 @@ export default function BriefingRoomPage() {
           />
         </div>
         <div className="p-4 border rounded-md mb-6">
-          You have eliminated {eliminatedName}. Vega grants you six extra hours to follow up on any revealed clues.
+          You have eliminated {eliminatedName}. Vega grants you six extra hours
+          to follow up on any revealed clues.
         </div>
         <div className="mb-4 font-semibold">Hours Remaining: {hours}</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -423,14 +424,10 @@ export default function BriefingRoomPage() {
         {questioned && (
           <div className="mt-6 flex flex-col md:flex-row gap-4">
             <button className="flex-1 px-6 py-4 bg-red-600 text-white rounded text-xl">
-              Arrest {
-                remaining.find((s) => s.id === questioned)?.name
-              }
+              Arrest {remaining.find((s) => s.id === questioned)?.name}
             </button>
             <button className="flex-1 px-6 py-4 bg-green-600 text-white rounded text-xl">
-              Arrest {
-                remaining.find((s) => s.id !== questioned)?.name
-              }
+              Arrest {remaining.find((s) => s.id !== questioned)?.name}
             </button>
           </div>
         )}
@@ -488,7 +485,6 @@ export default function BriefingRoomPage() {
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
                 <button
-
                   onClick={() => {
                     setEliminated(s.id);
                     setHours(6);
@@ -545,7 +541,10 @@ export default function BriefingRoomPage() {
       </div>
       {hours <= 0 && !chiefConsulted && (
         <div className="flex justify-center mb-4">
-          <button onClick={handleChief} className="px-6 py-3 bg-blue-600 text-white rounded-md">
+          <button
+            onClick={handleChief}
+            className="px-6 py-3 bg-blue-600 text-white rounded-md"
+          >
             Take findings to the police chief
           </button>
         </div>
