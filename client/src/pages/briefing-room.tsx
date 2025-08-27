@@ -5,6 +5,7 @@ interface Suspect {
   name: string;
   background: string;
   clues: string[];
+  followUps: string[];
 }
 
 const suspects: Suspect[] = [
@@ -23,6 +24,16 @@ const suspects: Suspect[] = [
       "Phone stays put: Her phone connects to sister’s Wi-Fi all night; no motion until morning.",
       "Bar receipt context: \"Two glasses\" receipt is two nights earlier at an unusual bar for Graham; bartender can’t ID Evelyn—suggests suspicion, not placement.",
     ],
+    followUps: [
+      "One pass the night before shows two slow loops and a brief hazard-light stop near the driveway. (↑ suspicion)",
+      "Locksmith confirms Evelyn requested a copy and asked about quiet entry on sliders; odd-hour latch opens correspond to non-cleaning days. (↑ suspicion)",
+      "The account’s saved collection includes annotated map screenshots (“Wed 11:20 — lights on in office”). Recovery number links to her family plan. (↑ suspicion)",
+      "Photo EXIF shows 11:22 p.m. two nights before from a spot facing the bedroom window; bank printouts have highlighted transfers to Graham’s personal account. (↑ suspicion)",
+      "Call log shows blocked caller asking which doors are “usually left latched in the morning.” Housekeeper recognizes Evelyn’s phrasing from earlier chats. (↑ suspicion)",
+      "Elevator outage explains a 17-minute lobby gap; footage shows Evelyn re-entering the condo level after. (↓ suspicion)",
+      "Sleep app shows continuous motionless window 1:05–5:57 a.m.; no steps recorded. (↓ suspicion)",
+      "Bartender recalls a man with a woman in a green scarf but can’t ID faces from CCTV; timestamp confirms not murder night. (ambiguous)",
+    ],
   },
   {
     id: "priya",
@@ -39,6 +50,16 @@ const suspects: Suspect[] = [
       "HR pause: Documented HR email shows all role changes paused pending legal review—undercuts an ‘imminent ouster’ narrative.",
       "Home IP footprint: The 6:18 a.m. VPN login resolves to her home IP across town, not a mobile hotspot near the scene.",
     ],
+    followUps: [
+      "Hallway mic catches “You don’t get to erase me from what I built.” Colleague notes Priya left visibly shaking. (↑ suspicion)",
+      "Texts show she bought a day parking pass near the office Saturday; calendar blocked as “Board prep.” (↑ suspicion)",
+      "Printer microdots tie the draft to office printer 2 at 6:55 p.m. day before; sticky note reads “Monday decision?”. (↑ suspicion)",
+      "Full thread restore shows they discussed a supplier letter of credit; “move” = LC extension, not personnel. (↓ suspicion)",
+      "Traffic cam captures her car leaving garage 7:14 a.m.; route ETA to Larchmont 22–26 min (arrive ~7:36–7:40). (ambiguous)",
+      "Overseas supplier provides recording excerpt; Priya on camera 6:33–7:04; screen-share 6:45–6:58. (↓ suspicion)",
+      "Outside counsel email advises “pause until Q3 board”; Priya forwarded it to Graham with “Understood.” (↓ suspicion)",
+      "Router logs show static WAN IP and DHCP lease to her laptop; no evidence of mobile hotspot travel. (↓ suspicion)",
+    ],
   },
   {
     id: "marco",
@@ -54,6 +75,16 @@ const suspects: Suspect[] = [
       "Partner alibi + meter: Partner places him home from 9 p.m.; smart-meter spike ~6:00 a.m. consistent with using power tools in his garage.",
       "No blood on tools: Missing pruning shears found downstream show plant residue only, no blood.",
       "Footwear mismatch: Tread wear in the print doesn’t match his current boots (points to an older pair not yet found).",
+    ],
+    followUps: [
+      "Site photos show his initials burned into one side of similar wedges; electrical tape and matching zip-ties missing from his toolbox inventory. (↑ suspicion)",
+      "Soil analysis adds polymeric sand from the Steele patio job he did last year—unique ratio he favors. (↑ suspicion)",
+      "Foreman says Marco kept the old remote a week post-termination “to finish a shed job” before returning it; current custody unclear; signal could be used by whoever held it. (ambiguous)",
+      "Marco sent a follow-up apology later that night, but never unsent the dropped pin; contact notes show he kept scouting the property line for “loose stonework.” (↑ suspicion)",
+      "Browser shows “bypass GFCI patio” and a YouTube “kill power to cameras” clip watched at 5:42 p.m. day before. He claims a neighbor asked for help. (↑ suspicion)",
+      "Neighbor’s Ring mic picks up saw hum 6:03–6:10 a.m.; truck remains in driveway. (↓ suspicion, but not airtight)",
+      "Rust and plant residue only; river silt suggests they’d been tossed days before, not that morning. (↓ suspicion)",
+      "Partner says Marco keeps an old pair in the truck “for dirty jobs”; Marco says they were stolen last month—no theft report filed. (↑ suspicion)",
     ],
   },
 ];
@@ -84,6 +115,11 @@ export default function BriefingRoomPage() {
     priya: [],
     marco: [],
   });
+  const [followed, setFollowed] = useState<Record<string, number[]>>({
+    evelyn: [],
+    priya: [],
+    marco: [],
+  });
   const [chiefConsulted, setChiefConsulted] = useState(false);
   const [chiefMessage, setChiefMessage] = useState("");
   const [eliminated, setEliminated] = useState<string | null>(null);
@@ -110,6 +146,14 @@ export default function BriefingRoomPage() {
     setHours(6);
   };
 
+  const handleFollowUp = (id: string, idx: number) => {
+    if (hours <= 0) return;
+    const used = followed[id];
+    if (used.includes(idx)) return;
+    setFollowed({ ...followed, [id]: [...used, idx] });
+    setHours(hours - 1);
+  };
+
   if (eliminated) {
     const eliminatedName = suspects.find((s) => s.id === eliminated)?.name;
     const remaining = suspects.filter((s) => s.id !== eliminated);
@@ -125,18 +169,33 @@ export default function BriefingRoomPage() {
           </div>
         )}
         <div className="p-4 border rounded-md mb-6">
-          You have eliminated {eliminatedName}.
+          You have eliminated {eliminatedName}. Vega grants you six extra hours to follow up on any revealed clues.
         </div>
+        <div className="mb-4 font-semibold">Hours Remaining: {hours}</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {remaining.map((s) => {
             const used = revealed[s.id];
+            const done = followed[s.id];
             return (
               <div key={s.id} className="border p-4 rounded-md space-y-2">
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
                 <ul className="list-disc ml-4 text-sm space-y-1">
                   {used.map((i) => (
-                    <li key={i}>{s.clues[i]}</li>
+                    <li key={i}>
+                      {s.clues[i]}
+                      {done.includes(i) ? (
+                        <p className="mt-1 ml-4">Follow-up → {s.followUps[i]}</p>
+                      ) : (
+                        <button
+                          onClick={() => handleFollowUp(s.id, i)}
+                          disabled={hours <= 0}
+                          className="ml-2 px-1 py-0.5 bg-purple-600 text-white rounded disabled:bg-gray-400"
+                        >
+                          Follow up
+                        </button>
+                      )}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -168,7 +227,11 @@ export default function BriefingRoomPage() {
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
                 <button
-                  onClick={() => setEliminated(s.id)}
+
+                  onClick={() => {
+                    setEliminated(s.id);
+                    setHours(6);
+                  }}
                   className="px-2 py-1 bg-blue-600 text-white rounded"
                 >
                   Eliminate
