@@ -212,7 +212,7 @@ export default function BriefingRoomPage() {
         </header>
         <StageBreadcrumb current={0} />
         <div className="mb-6 flex justify-center">
-          <AspectRatio ratio={16 / 9} className="w-full max-w-md">
+          <AspectRatio ratio={16 / 9} className="w-full">
             <img
               src={coverPic}
               alt="Briefing cover"
@@ -240,8 +240,8 @@ export default function BriefingRoomPage() {
         </header>
         <StageBreadcrumb current={0} />
         <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-          <div className="text-center">
-            <AspectRatio ratio={1} className="w-48 mx-auto">
+          <div className="text-center w-full md:w-1/3">
+            <AspectRatio ratio={1} className="w-full">
               <img
                 src={grahamPic}
                 alt="Graham Steele"
@@ -250,7 +250,7 @@ export default function BriefingRoomPage() {
             </AspectRatio>
             <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
           </div>
-          <AspectRatio ratio={4 / 3} className="w-full max-w-md">
+          <AspectRatio ratio={4 / 3} className="w-full md:w-2/3">
             <img
               src={scenePic}
               alt="Crime scene"
