@@ -77,7 +77,7 @@ function PhaseChain({ phases, current }: { phases: string[]; current: number }) 
 
 export default function BriefingRoomPage() {
   const phases = ["Investigation"];
-  const [phaseIdx, setPhaseIdx] = useState(-1);
+  const [phaseIdx] = useState(0);
   const [hours, setHours] = useState(12);
   const [revealed, setRevealed] = useState<Record<string, number[]>>({
     evelyn: [],
@@ -87,8 +87,6 @@ export default function BriefingRoomPage() {
   const [chiefConsulted, setChiefConsulted] = useState(false);
   const [chiefMessage, setChiefMessage] = useState("");
   const [eliminated, setEliminated] = useState<string | null>(null);
-
-  const handleBegin = () => setPhaseIdx(0);
 
   const handleInvestigate = (id: string) => {
     if (hours <= 0) return;
@@ -109,26 +107,12 @@ export default function BriefingRoomPage() {
     setChiefMessage(
       'Duty Chief Vega: "Hmm good start, but it\'s not enough, I can give you another 6 hours, but after that I need you to eliminate at least one of these suspects so that we can focus our investigation. We don\'t have a lot of time, Cath!"'
     );
-    setHours(4);
+    setHours(6);
   };
-
-  if (phaseIdx === -1) {
-    return (
-      <div className="min-h-screen bg-white text-gray-900 p-8">
-        <header className="border-b-4 border-red-600 pb-4 mb-8">
-          <h1 className="text-4xl font-bold">Briefing Room</h1>
-        </header>
-        <div className="flex justify-center">
-          <button onClick={handleBegin} className="px-6 py-3 bg-red-600 text-white rounded-md">
-            Begin
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   if (eliminated) {
     const eliminatedName = suspects.find((s) => s.id === eliminated)?.name;
+    const remaining = suspects.filter((s) => s.id !== eliminated);
     return (
       <div className="min-h-screen bg-white text-gray-900 p-8">
         <header className="border-b-4 border-red-600 pb-4 mb-6">
@@ -140,8 +124,24 @@ export default function BriefingRoomPage() {
             {chiefMessage}
           </div>
         )}
-        <div className="p-4 border rounded-md">
+        <div className="p-4 border rounded-md mb-6">
           You have eliminated {eliminatedName}.
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {remaining.map((s) => {
+            const used = revealed[s.id];
+            return (
+              <div key={s.id} className="border p-4 rounded-md space-y-2">
+                <h2 className="text-lg font-bold">{s.name}</h2>
+                <p className="text-sm">{s.background}</p>
+                <ul className="list-disc ml-4 text-sm space-y-1">
+                  {used.map((i) => (
+                    <li key={i}>{s.clues[i]}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -186,28 +186,19 @@ export default function BriefingRoomPage() {
     );
   }
 
-  if (hours <= 0 && !chiefConsulted) {
-    return (
-      <div className="min-h-screen bg-white text-gray-900 p-8">
-        <header className="border-b-4 border-red-600 pb-4 mb-6">
-          <h1 className="text-4xl font-bold">Briefing Room</h1>
-        </header>
-        <PhaseChain phases={phases} current={phaseIdx} />
-        <div className="flex justify-center">
-          <button onClick={handleChief} className="px-6 py-3 bg-red-600 text-white rounded-md">
-            Take findings to the police chief
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-white text-gray-900 p-8">
       <header className="border-b-4 border-red-600 pb-4 mb-6">
         <h1 className="text-4xl font-bold">Briefing Room</h1>
       </header>
       <PhaseChain phases={phases} current={phaseIdx} />
+      {hours <= 0 && !chiefConsulted && (
+        <div className="flex justify-center mb-4">
+          <button onClick={handleChief} className="px-6 py-3 bg-red-600 text-white rounded-md">
+            Take findings to the police chief
+          </button>
+        </div>
+      )}
       {chiefMessage && (
         <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
           {chiefMessage}
