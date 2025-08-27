@@ -4,6 +4,16 @@ import scenePic from "../pics/scene.png";
 import evelynPic from "../pics/evelyn.png";
 import priyaPic from "../pics/priya.png";
 import marcoPic from "../pics/marco.png";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../components/ui/breadcrumb";
+
+const vegaPic = "../pics/vega.png"; // image supplied separately
 
 interface Suspect {
   id: string;
@@ -98,26 +108,31 @@ const suspects: Suspect[] = [
   },
 ];
 
-function PhaseChain({ phases, current }: { phases: string[]; current: number }) {
+function StageBreadcrumb({ current }: { current: number }) {
+  const stages = [
+    "Clue Gathering",
+    "Additional Clue Gathering",
+    "Clue Follow Up",
+  ];
   return (
-    <div className="flex space-x-2 mb-6">
-      {phases.map((phase, idx) => (
-        <div
-          key={phase}
-          className={`px-4 py-2 rounded-full text-sm font-medium border ${
-            idx === current ? "bg-blue-600 text-white border-blue-600" : "bg-gray-200 text-gray-700 border-gray-200"
-          }`}
-        >
-          {phase}
-        </div>
-      ))}
-    </div>
+    <Breadcrumb className="mb-6">
+      <BreadcrumbList>
+        {stages.map((stage, idx) => (
+          <BreadcrumbItem key={stage}>
+            {idx === current ? (
+              <BreadcrumbPage>{stage}</BreadcrumbPage>
+            ) : (
+              <BreadcrumbLink className="text-gray-400">{stage}</BreadcrumbLink>
+            )}
+            {idx < stages.length - 1 && <BreadcrumbSeparator />}
+          </BreadcrumbItem>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 }
 
 export default function BriefingRoomPage() {
-  const phases = ["Investigation"];
-  const [phaseIdx] = useState(0);
   const [hours, setHours] = useState(12);
   const [revealed, setRevealed] = useState<Record<string, number[]>>({
     evelyn: [],
@@ -132,6 +147,12 @@ export default function BriefingRoomPage() {
   const [chiefConsulted, setChiefConsulted] = useState(false);
   const [chiefMessage, setChiefMessage] = useState("");
   const [eliminated, setEliminated] = useState<string | null>(null);
+  const [questioned, setQuestioned] = useState<string | null>(null);
+  const [justRevealed, setJustRevealed] = useState<{
+    clues: number[];
+    followUps: number[];
+  }>({ clues: [], followUps: [] });
+  const stageIdx = eliminated ? 2 : chiefConsulted ? 1 : 0;
 
   const handleInvestigate = (id: string) => {
     if (hours <= 0) return;
@@ -163,6 +184,19 @@ export default function BriefingRoomPage() {
     setHours(hours - 1);
   };
 
+  const handleQuestion = (id: string) => {
+    const suspect = suspects.find((s) => s.id === id);
+    if (!suspect) return;
+    const allClues = suspect.clues.map((_, i) => i);
+    const allFollow = suspect.followUps.map((_, i) => i);
+    const newClues = allClues.filter((i) => !revealed[id].includes(i));
+    const newFollow = allFollow.filter((i) => !followed[id].includes(i));
+    setRevealed({ ...revealed, [id]: allClues });
+    setFollowed({ ...followed, [id]: allFollow });
+    setQuestioned(id);
+    setJustRevealed({ clues: newClues, followUps: newFollow });
+  };
+
   if (eliminated) {
     const eliminatedName = suspects.find((s) => s.id === eliminated)?.name;
     const remaining = suspects.filter((s) => s.id !== eliminated);
@@ -171,7 +205,7 @@ export default function BriefingRoomPage() {
         <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
-        <PhaseChain phases={phases} current={phaseIdx} />
+        <StageBreadcrumb current={stageIdx} />
         <div className="flex flex-col md:flex-row gap-6 mb-6">
           <div className="text-center">
             <img src={grahamPic} alt="Graham Steele" className="w-48 h-48 object-cover rounded mx-auto" />
@@ -180,8 +214,13 @@ export default function BriefingRoomPage() {
           <img src={scenePic} alt="Crime scene" className="flex-1 object-cover rounded" />
         </div>
         {chiefMessage && (
-          <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
-            {chiefMessage}
+          <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+            <img
+              src={vegaPic}
+              alt="Duty Chief Vega"
+              className="w-16 h-16 object-cover rounded"
+            />
+            <p>{chiefMessage}</p>
           </div>
         )}
         <div className="p-4 border rounded-md mb-6">
@@ -192,17 +231,41 @@ export default function BriefingRoomPage() {
           {remaining.map((s) => {
             const used = revealed[s.id];
             const done = followed[s.id];
+            const highlight =
+              questioned === s.id ? justRevealed : { clues: [], followUps: [] };
             return (
               <div key={s.id} className="border p-4 rounded-md space-y-2">
                 <img src={s.image} alt={s.name} className="w-full h-48 object-cover rounded" />
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
+                {!questioned && (
+                  <button
+                    onClick={() => handleQuestion(s.id)}
+                    className="px-2 py-1 bg-red-600 text-white rounded"
+                  >
+                    Bring in for questioning
+                  </button>
+                )}
                 <ul className="list-disc ml-4 text-sm space-y-1">
                   {used.map((i) => (
-                    <li key={i}>
+                    <li
+                      key={i}
+                      className={
+                        highlight.clues.includes(i) ? "bg-yellow-100" : ""
+                      }
+                    >
                       {s.clues[i]}
                       {done.includes(i) ? (
-                        <p className="mt-1 ml-4">Follow-up → {s.followUps[i]}</p>
+                        <p
+                          className={
+                            "mt-1 ml-4 " +
+                            (highlight.followUps.includes(i)
+                              ? "bg-yellow-100"
+                              : "")
+                          }
+                        >
+                          Follow-up → {s.followUps[i]}
+                        </p>
                       ) : (
                         <button
                           onClick={() => handleFollowUp(s.id, i)}
@@ -219,6 +282,20 @@ export default function BriefingRoomPage() {
             );
           })}
         </div>
+        {questioned && (
+          <div className="mt-6 flex flex-col md:flex-row gap-4">
+            <button className="flex-1 px-6 py-4 bg-red-600 text-white rounded text-xl">
+              Arrest {
+                remaining.find((s) => s.id === questioned)?.name
+              }
+            </button>
+            <button className="flex-1 px-6 py-4 bg-green-600 text-white rounded text-xl">
+              Arrest {
+                remaining.find((s) => s.id !== questioned)?.name
+              }
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -229,7 +306,7 @@ export default function BriefingRoomPage() {
         <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
-        <PhaseChain phases={phases} current={phaseIdx} />
+        <StageBreadcrumb current={stageIdx} />
         <div className="flex flex-col md:flex-row gap-6 mb-6">
           <div className="text-center">
             <img src={grahamPic} alt="Graham Steele" className="w-48 h-48 object-cover rounded mx-auto" />
@@ -238,8 +315,13 @@ export default function BriefingRoomPage() {
           <img src={scenePic} alt="Crime scene" className="flex-1 object-cover rounded" />
         </div>
         {chiefMessage && (
-          <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
-            {chiefMessage}
+          <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+            <img
+              src={vegaPic}
+              alt="Duty Chief Vega"
+              className="w-16 h-16 object-cover rounded"
+            />
+            <p>{chiefMessage}</p>
           </div>
         )}
         <div className="mb-6">Select a suspect to eliminate:</div>
@@ -279,7 +361,7 @@ export default function BriefingRoomPage() {
       <header className="border-b-4 border-blue-600 pb-4 mb-6">
         <h1 className="text-4xl font-bold">Briefing Room</h1>
       </header>
-      <PhaseChain phases={phases} current={phaseIdx} />
+      <StageBreadcrumb current={stageIdx} />
       <div className="flex flex-col md:flex-row gap-6 mb-6">
         <div className="text-center">
           <img src={grahamPic} alt="Graham Steele" className="w-48 h-48 object-cover rounded mx-auto" />
@@ -295,8 +377,13 @@ export default function BriefingRoomPage() {
         </div>
       )}
       {chiefMessage && (
-        <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
-          {chiefMessage}
+        <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+          <img
+            src={vegaPic}
+            alt="Duty Chief Vega"
+            className="w-16 h-16 object-cover rounded"
+          />
+          <p>{chiefMessage}</p>
         </div>
       )}
       <div className="mb-4 font-semibold">Hours Remaining: {hours}</div>
