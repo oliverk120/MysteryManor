@@ -1,8 +1,14 @@
 import { useState } from "react";
+import grahamPic from "../pics/grahamsteele.png";
+import scenePic from "../pics/scene.png";
+import evelynPic from "../pics/evelyn.png";
+import priyaPic from "../pics/priya.png";
+import marcoPic from "../pics/marco.png";
 
 interface Suspect {
   id: string;
   name: string;
+  image: string;
   background: string;
   clues: string[];
   followUps: string[];
@@ -12,6 +18,7 @@ const suspects: Suspect[] = [
   {
     id: "evelyn",
     name: "Evelyn Steele — Spouse (trial separation)",
+    image: evelynPic,
     background:
       "Interior designer. Married to Graham; on a week-long trial separation while she wrestles with suspected infidelity. Tends to monitor and control when anxious; arguments lately mixed trust + estate/beneficiary issues.",
     clues: [
@@ -38,6 +45,7 @@ const suspects: Suspect[] = [
   {
     id: "priya",
     name: "Priya Nayar — Business partner (COO)",
+    image: priyaPic,
     background:
       "Co-founder/COO at Steele & Nayar. Brilliant, exacting, and politically savvy. Relationship with Graham has soured over power/strategy; an equity re-cut and possible exit were on the table.",
     clues: [
@@ -64,6 +72,7 @@ const suspects: Suspect[] = [
   {
     id: "marco",
     name: "Marco Flores — Former landscape contractor",
+    image: marcoPic,
     background:
       "Knew the Steele family since Graham was a kid; took pride in the property. Recently fired after cost-cutting. Quick temper, fiercely loyal until he feels disrespected.",
     clues: [
@@ -163,6 +172,13 @@ export default function BriefingRoomPage() {
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <PhaseChain phases={phases} current={phaseIdx} />
+        <div className="flex flex-col md:flex-row gap-6 mb-6">
+          <div className="text-center">
+            <img src={grahamPic} alt="Graham Steele" className="w-48 h-48 object-cover rounded mx-auto" />
+            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
+          </div>
+          <img src={scenePic} alt="Crime scene" className="flex-1 object-cover rounded" />
+        </div>
         {chiefMessage && (
           <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
             {chiefMessage}
@@ -178,6 +194,7 @@ export default function BriefingRoomPage() {
             const done = followed[s.id];
             return (
               <div key={s.id} className="border p-4 rounded-md space-y-2">
+                <img src={s.image} alt={s.name} className="w-full h-48 object-cover rounded" />
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
                 <ul className="list-disc ml-4 text-sm space-y-1">
@@ -213,6 +230,13 @@ export default function BriefingRoomPage() {
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <PhaseChain phases={phases} current={phaseIdx} />
+        <div className="flex flex-col md:flex-row gap-6 mb-6">
+          <div className="text-center">
+            <img src={grahamPic} alt="Graham Steele" className="w-48 h-48 object-cover rounded mx-auto" />
+            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
+          </div>
+          <img src={scenePic} alt="Crime scene" className="flex-1 object-cover rounded" />
+        </div>
         {chiefMessage && (
           <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
             {chiefMessage}
@@ -224,6 +248,7 @@ export default function BriefingRoomPage() {
             const used = revealed[s.id];
             return (
               <div key={s.id} className="border p-4 rounded-md space-y-2">
+                <img src={s.image} alt={s.name} className="w-full h-48 object-cover rounded" />
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
                 <button
@@ -255,6 +280,13 @@ export default function BriefingRoomPage() {
         <h1 className="text-4xl font-bold">Briefing Room</h1>
       </header>
       <PhaseChain phases={phases} current={phaseIdx} />
+      <div className="flex flex-col md:flex-row gap-6 mb-6">
+        <div className="text-center">
+          <img src={grahamPic} alt="Graham Steele" className="w-48 h-48 object-cover rounded mx-auto" />
+          <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
+        </div>
+        <img src={scenePic} alt="Crime scene" className="flex-1 object-cover rounded" />
+      </div>
       {hours <= 0 && !chiefConsulted && (
         <div className="flex justify-center mb-4">
           <button onClick={handleChief} className="px-6 py-3 bg-blue-600 text-white rounded-md">
@@ -274,6 +306,7 @@ export default function BriefingRoomPage() {
           const allRevealed = used.length >= s.clues.length;
           return (
             <div key={s.id} className="border p-4 rounded-md space-y-2">
+              <img src={s.image} alt={s.name} className="w-full h-48 object-cover rounded" />
               <h2 className="text-lg font-bold">{s.name}</h2>
               <p className="text-sm">{s.background}</p>
               <button
