@@ -7,12 +7,11 @@
   --paper: #FAF7EF;
   --ink: #1B1B1B;
   --graphite: #3E3E3E;
-  --stamp-red: #B22222;
   --staple-gray: #9AA0A6;
   --tab-blue: #315B7F;
   --cleared: #2F7D32;
   --pending: #A37F2E;
-  --flagged: #B22222;
+  --flagged: var(--tab-blue);
 
   --background: var(--manila);
   --foreground: var(--ink);
@@ -26,9 +25,9 @@
   --secondary-foreground: var(--ink);
   --muted: var(--paper);
   --muted-foreground: var(--graphite);
-  --accent: var(--stamp-red);
+  --accent: var(--tab-blue);
   --accent-foreground: var(--paper);
-  --destructive: var(--stamp-red);
+  --destructive: var(--tab-blue);
   --destructive-foreground: var(--paper);
   --border: var(--staple-gray);
   --input: var(--paper);
@@ -54,17 +53,16 @@
   --secondary-foreground: #E7E5DF;
   --muted: #222325;
   --muted-foreground: #BEBBB2; /* Muted Fog */
-  --accent: #CF3A3A; /* Stamp Red 80 */
+  --accent: #5E8FB9; /* Detective Blue */
   --accent-foreground: #E7E5DF;
-  --destructive: #CF3A3A;
+  --destructive: #5E8FB9;
   --destructive-foreground: #E7E5DF;
   --border: #6D7176;
   --input: #222325;
   --ring: #5E8FB9;
-
-  --stamp-red: #CF3A3A;
   --staple-gray: #6D7176;
   --tab-blue: #5E8FB9;
+  --flagged: #5E8FB9;
 }
 
 @layer base {
