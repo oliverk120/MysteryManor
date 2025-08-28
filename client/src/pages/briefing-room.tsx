@@ -6,7 +6,7 @@ import scenePic from "../pics/scene.png";
 import evelynPic from "../pics/evelyn.png";
 import priyaPic from "../pics/priya.png";
 import marcoPic from "../pics/marco.png";
-import vegaPic from "../pics/vega.svg";
+import vegaPic from "../pics/vega.png";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -239,13 +239,11 @@ export default function BriefingRoomPage() {
         </header>
         <StageBreadcrumb current={0} />
         <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
-          <AspectRatio ratio={1} className="w-24 md:w-32 shrink-0">
-            <img
-              src={vegaPic}
-              alt="Duty Chief Vega"
-              className="object-cover rounded w-full h-full"
-            />
-          </AspectRatio>
+          <img
+            src={vegaPic}
+            alt="Duty Chief Vega"
+            className="h-48 w-48 object-cover rounded shrink-0"
+          />
           <div className="space-y-4 text-sm">
             <p>
               Detective, Deputy — thanks for coming in on short notice. We’ve
@@ -330,13 +328,11 @@ export default function BriefingRoomPage() {
         <StageBreadcrumb current={stageIdx} />
         {chiefMessage && (
           <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
-            <AspectRatio ratio={1} className="w-24 shrink-0">
-              <img
-                src={vegaPic}
-                alt="Duty Chief Vega"
-                className="object-cover rounded w-full h-full"
-              />
-            </AspectRatio>
+            <img
+              src={vegaPic}
+              alt="Duty Chief Vega"
+              className="h-48 w-48 object-cover rounded shrink-0"
+            />
             <p>{chiefMessage}</p>
           </div>
         )}
@@ -442,18 +438,16 @@ export default function BriefingRoomPage() {
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <StageBreadcrumb current={stageIdx} />
-        {chiefMessage && (
-          <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
-            <AspectRatio ratio={1} className="w-24 shrink-0">
-              <img
-                src={vegaPic}
-                alt="Duty Chief Vega"
-                className="object-cover rounded w-full h-full"
-              />
-            </AspectRatio>
-            <p>{chiefMessage}</p>
-          </div>
-        )}
+      {chiefMessage && (
+        <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+          <img
+            src={vegaPic}
+            alt="Duty Chief Vega"
+            className="h-48 w-48 object-cover rounded shrink-0"
+          />
+          <p>{chiefMessage}</p>
+        </div>
+      )}
         <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
           <div className="text-center">
             <img
@@ -514,13 +508,11 @@ export default function BriefingRoomPage() {
       <StageBreadcrumb current={stageIdx} />
       {chiefMessage && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
-          <AspectRatio ratio={1} className="w-24 shrink-0">
-            <img
-              src={vegaPic}
-              alt="Duty Chief Vega"
-              className="object-cover rounded w-full h-full"
-            />
-          </AspectRatio>
+          <img
+            src={vegaPic}
+            alt="Duty Chief Vega"
+            className="h-48 w-48 object-cover rounded shrink-0"
+          />
           <p>{chiefMessage}</p>
         </div>
       )}
