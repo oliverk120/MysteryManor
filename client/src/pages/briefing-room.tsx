@@ -6,6 +6,7 @@ import scenePic from "../pics/scene.png";
 import evelynPic from "../pics/evelyn.png";
 import priyaPic from "../pics/priya.png";
 import marcoPic from "../pics/marco.png";
+import vegaPic from "../pics/vega.svg";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -14,8 +15,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../components/ui/breadcrumb";
-
-const vegaPic = "../pics/vega.png"; // image supplied separately
 
 const casefileClasses =
   "bg-amber-50 border-2 border-amber-200 p-4 rounded-sm shadow-md space-y-2";
@@ -239,26 +238,75 @@ export default function BriefingRoomPage() {
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <StageBreadcrumb current={0} />
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-          <div className="text-center w-full md:w-1/3">
-            <AspectRatio ratio={1} className="w-full">
-              <img
-                src={grahamPic}
-                alt="Graham Steele"
-                className="object-cover rounded w-full h-full"
-              />
-            </AspectRatio>
-            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-          </div>
-          <AspectRatio ratio={4 / 3} className="w-full md:w-2/3">
+        <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
+          <AspectRatio ratio={1} className="w-24 md:w-32 shrink-0">
             <img
-              src={scenePic}
-              alt="Crime scene"
+              src={vegaPic}
+              alt="Duty Chief Vega"
               className="object-cover rounded w-full h-full"
             />
           </AspectRatio>
+          <div className="space-y-4 text-sm">
+            <p>
+              Detective, Deputy — thanks for coming in on short notice. We’ve
+              got a homicide flagged as OMITB-001.
+            </p>
+            <p>
+              Victim is Graham Steele, male, 39, CEO and co-founder of Steele &
+              Nayar, a boutique design firm. He was found deceased this morning
+              in the primary bedroom of his home on Larchmont. Preliminary cause
+              of death is blunt-force trauma to the head by an unknown household
+              object. No sharp-force injuries. We’ll confirm with the ME.
+            </p>
+            <p>
+              Entry/exit: No signs of forced entry. Smart-lock shows routine
+              use; we’re pulling full device logs. House staff and contractors
+              are being accounted for.
+            </p>
+            <p>
+              Household context: Mr. Steele’s spouse, Evelyn, has been staying
+              with her sister this week; she’s cooperating. Business partner is
+              Priya Nayar. Long-time landscape contractor is Marco Flores. We’ll
+              keep our lens wide for now.
+            </p>
+            <p>
+              Detective Cath — you may recall Mr. Steele. You took his statement
+              last fall on a reported break-in and he attended your precinct’s
+              community safety seminar. That prior contact is noted and not a
+              conflict at this time.
+            </p>
+            <p>
+              Timeline anchors for now: neighbors report quiet overnight; first
+              external activity around 07:30–08:00. We’ll refine with cams,
+              device telemetry, and phone pings.
+            </p>
+            <p>
+              Your task this evening: (1) get a working timeline, (2) identify a
+              primary suspect for initial pressure, (3) flag any exculpatory
+              info so we don’t lock in too early. Deputy Oliver will manage
+              materials and the digital interrogator.
+            </p>
+            <p>
+              Questions can wait until after you review the packet. Good
+              hunting.
+            </p>
+          </div>
         </div>
-        <p className="mb-6 text-center">Briefing details go here...</p>
+        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
+          <div className="text-center">
+            <img
+              src={grahamPic}
+              alt="Graham Steele"
+              className="h-48 w-48 object-cover rounded"
+            />
+            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
+          </div>
+          <img
+            src={scenePic}
+            alt="Crime scene"
+            className="h-48 object-cover rounded"
+          />
+        </div>
         <div className="flex justify-center">
           <button
             onClick={() => setStage(2)}
