@@ -111,8 +111,15 @@ const suspects: Suspect[] = [
   },
 ];
 
-function StageBreadcrumb({ current }: { current: number }) {
+function StageBreadcrumb({
+  current,
+  onNavigate,
+}: {
+  current: number;
+  onNavigate: (idx: number) => void;
+}) {
   const stages = [
+    "Breaking News",
     "Briefing",
     "Clue Gathering",
     "Additional Clue Gathering",
@@ -125,6 +132,13 @@ function StageBreadcrumb({ current }: { current: number }) {
           <BreadcrumbItem key={stage}>
             {idx === current ? (
               <BreadcrumbPage>{stage}</BreadcrumbPage>
+            ) : idx < current ? (
+              <BreadcrumbLink
+                onClick={() => onNavigate(idx)}
+                className="cursor-pointer"
+              >
+                {stage}
+              </BreadcrumbLink>
             ) : (
               <BreadcrumbLink className="text-gray-400">{stage}</BreadcrumbLink>
             )}
@@ -157,7 +171,7 @@ export default function BriefingRoomPage() {
     clues: number[];
     followUps: number[];
   }>({ clues: [], followUps: [] });
-  const stageIdx = stage <= 1 ? 0 : eliminated ? 3 : chiefConsulted ? 2 : 1;
+  const stageIdx = stage === 0 ? 0 : stage === 1 ? 1 : eliminated ? 4 : chiefConsulted ? 3 : 2;
 
   const handleInvestigate = (id: string) => {
     if (hours <= 0) return;
@@ -208,7 +222,7 @@ export default function BriefingRoomPage() {
         <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
-        <StageBreadcrumb current={0} />
+        <StageBreadcrumb current={0} onNavigate={setStage} />
         <div className="mb-6 flex justify-center">
           <AspectRatio ratio={16 / 9} className="w-full">
             <img
@@ -236,7 +250,7 @@ export default function BriefingRoomPage() {
         <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
-        <StageBreadcrumb current={0} />
+        <StageBreadcrumb current={1} onNavigate={setStage} />
         <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
           <img
             src={vegaPic}
@@ -327,7 +341,7 @@ export default function BriefingRoomPage() {
         <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
-        <StageBreadcrumb current={stageIdx} />
+        <StageBreadcrumb current={stageIdx} onNavigate={setStage} />
         {chiefMessage && (
           <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
             <img
@@ -438,7 +452,7 @@ export default function BriefingRoomPage() {
         <header className="border-b-4 border-blue-600 pb-4 mb-6">
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
-        <StageBreadcrumb current={stageIdx} />
+        <StageBreadcrumb current={stageIdx} onNavigate={setStage} />
       {chiefMessage && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
           <img
@@ -505,7 +519,7 @@ export default function BriefingRoomPage() {
       <header className="border-b-4 border-blue-600 pb-4 mb-6">
         <h1 className="text-4xl font-bold">Briefing Room</h1>
       </header>
-      <StageBreadcrumb current={stageIdx} />
+      <StageBreadcrumb current={stageIdx} onNavigate={setStage} />
       {chiefMessage && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
           <img
