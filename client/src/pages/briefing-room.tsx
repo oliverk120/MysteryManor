@@ -281,11 +281,10 @@ export default function BriefingRoomPage() {
               Your task this evening: (1) get a working timeline, (2) identify a
               primary suspect for initial pressure, (3) flag any exculpatory
               info so we don’t lock in too early. Deputy Oliver will manage
-              materials and the digital interrogator.
+              materials and take you to the evidence room to show you what we've recovered from the scene.
             </p>
             <p>
-              Questions can wait until after you review the packet. Good
-              hunting.
+              Questions can wait until after you review the packet. Oh and Detective... if you solve the case, you get the dessert!
             </p>
           </div>
         </div>
