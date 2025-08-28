@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import coverPic from "../pics/breakingnews.png";
 import grahamPic from "../pics/grahamsteele.png";
-import scenePic from "../pics/scene.png";
 import evelynPic from "../pics/evelyn.png";
 import priyaPic from "../pics/priya.png";
 import marcoPic from "../pics/marco.png";
@@ -290,24 +289,28 @@ export default function BriefingRoomPage() {
             </p>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-          <div className="text-center">
-            <img
-              src={grahamPic}
-              alt="Graham Steele"
-              className="h-48 w-48 object-cover rounded"
-            />
-            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-          </div>
+        <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
           <img
-            src={scenePic}
-            alt="Crime scene"
-            className="h-48 object-cover rounded"
+            src={grahamPic}
+            alt="Graham Steele"
+            className="h-48 w-48 object-cover rounded shrink-0"
           />
+          <div className="flex-1">
+            <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
+            <p className="text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
+            </p>
+          </div>
         </div>
         <div className="flex justify-center">
           <button
-            onClick={() => setStage(2)}
+            onClick={() => {
+              setStage(2);
+              setChiefMessage(
+                "Alright Detective, you have 12 hours to investigate these suspects. I expect a report at the end with your findings!",
+              );
+            }}
             className="px-6 py-3 bg-blue-600 text-white rounded-md"
           >
             Show Suspects
@@ -336,20 +339,19 @@ export default function BriefingRoomPage() {
             <p>{chiefMessage}</p>
           </div>
         )}
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-          <div className="text-center">
-            <img
-              src={grahamPic}
-              alt="Graham Steele"
-              className="h-48 w-48 object-cover rounded"
-            />
-            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-          </div>
+        <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
           <img
-            src={scenePic}
-            alt="Crime scene"
-            className="h-48 object-cover rounded"
+            src={grahamPic}
+            alt="Graham Steele"
+            className="h-48 w-48 object-cover rounded shrink-0"
           />
+          <div className="flex-1">
+            <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
+            <p className="text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
+            </p>
+          </div>
         </div>
         <div className="p-4 border rounded-md mb-6">
           You have eliminated {eliminatedName}. Vega grants you six extra hours
@@ -448,20 +450,19 @@ export default function BriefingRoomPage() {
           <p>{chiefMessage}</p>
         </div>
       )}
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-          <div className="text-center">
-            <img
-              src={grahamPic}
-              alt="Graham Steele"
-              className="h-48 w-48 object-cover rounded"
-            />
-            <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-          </div>
+        <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
           <img
-            src={scenePic}
-            alt="Crime scene"
-            className="h-48 object-cover rounded"
+            src={grahamPic}
+            alt="Graham Steele"
+            className="h-48 w-48 object-cover rounded shrink-0"
           />
+          <div className="flex-1">
+            <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
+            <p className="text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
+            </p>
+          </div>
         </div>
         <div className="mb-6">Select a suspect to eliminate:</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -516,20 +517,19 @@ export default function BriefingRoomPage() {
           <p>{chiefMessage}</p>
         </div>
       )}
-      <div className="flex flex-col md:flex-row gap-6 mb-6 items-center">
-        <div className="text-center">
-          <img
-            src={grahamPic}
-            alt="Graham Steele"
-            className="h-48 w-48 object-cover rounded"
-          />
-          <p className="mt-2 text-sm font-semibold">Graham Steele - Victim</p>
-        </div>
+      <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
         <img
-          src={scenePic}
-          alt="Crime scene"
-          className="h-48 object-cover rounded"
+          src={grahamPic}
+          alt="Graham Steele"
+          className="h-48 w-48 object-cover rounded shrink-0"
         />
+        <div className="flex-1">
+          <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
+          <p className="text-sm">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+            facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
+          </p>
+        </div>
       </div>
       {hours <= 0 && !chiefConsulted && (
         <div className="flex justify-center mb-4">
