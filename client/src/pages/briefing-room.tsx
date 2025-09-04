@@ -193,6 +193,9 @@ export default function BriefingRoomPage() {
     clues: number[];
     followUps: number[];
   }>({ clues: [], followUps: [] });
+  const [finalTimer, setFinalTimer] = useState<number | null>(null);
+  const [arrestChoice, setArrestChoice] = useState<string | null>(null);
+  const [finalOutcome, setFinalOutcome] = useState<string | null>(null);
   const stageIdx =
     stage === 0 ? 0 : stage === 1 ? 1 : eliminated ? 4 : chiefConsulted ? 3 : 2;
 
@@ -211,6 +214,33 @@ export default function BriefingRoomPage() {
     }, 1000);
     return () => clearInterval(timer);
   }, [stage, timeLeft]);
+
+  useEffect(() => {
+    if (eliminated && hours === 0 && !questioned) {
+      setChiefMessage(
+        "Ok good work on follow up on these clues, but we've run out of time. We need to bring in one of these suspects for questioning. That should allow us to get the additional detail we want. We'll only have time to bring one of them in though... so choose wisely!",
+      );
+    }
+  }, [eliminated, hours, questioned]);
+
+  useEffect(() => {
+    if (finalTimer === null || finalTimer <= 0) return;
+    const t = setInterval(() => {
+      setFinalTimer((s) => (s && s > 0 ? s - 1 : s));
+    }, 1000);
+    return () => clearInterval(t);
+  }, [finalTimer]);
+
+  useEffect(() => {
+    if (finalTimer === 0 && finalOutcome === null) {
+      const rand = Math.floor(Math.random() * 100001);
+      if (rand === 0) {
+        setFinalOutcome(arrestChoice ?? questioned ?? "evelyn");
+      } else {
+        setFinalOutcome("cath");
+      }
+    }
+  }, [finalTimer, finalOutcome, arrestChoice, questioned]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60)
@@ -266,7 +296,33 @@ export default function BriefingRoomPage() {
     setFollowed({ ...followed, [id]: allFollow });
     setQuestioned(id);
     setJustRevealed({ clues: newClues, followUps: newFollow });
+    const simpleName = suspect.name.split(" —")[0];
+    setChiefMessage(
+      `Ok great, we've brought in ${simpleName} for questioning and have learned a lot more. Cath, I need you to review the facts of the two suspects in detail and make a decision on who we should arrest... I will weigh your decision against the evidence you've gathered so far and if I agree with your assessment, we will arrest the suspect and you win the dessert!`,
+    );
+    setFinalTimer(10);
+    setArrestChoice(null);
   };
+
+  if (finalOutcome === "cath") {
+    return (
+      <div className="min-h-screen bg-red-700 p-8 flex items-center justify-center">
+        <h1 className="text-white text-center font-bold text-3xl">
+          Catherine Waite, you are under arrest for the murder of Graham Steele. Forensic evidence on the glass as well as neighbour testimony has come back stating you were at his house overnight before his murder. You had also failed to disclose your romantic affair with Mr. Steele. Oliver will arrest you shortly
+        </h1>
+      </div>
+    );
+  } else if (finalOutcome) {
+    const arrestName =
+      suspects.find((s) => s.id === finalOutcome)?.name || finalOutcome;
+    return (
+      <div className="min-h-screen bg-green-700 p-8 flex items-center justify-center">
+        <h1 className="text-white text-center font-bold text-3xl">
+          Arrest warrant issued for {arrestName}.
+        </h1>
+      </div>
+    );
+  }
 
   if (stage === 0) {
     return (
@@ -394,7 +450,8 @@ export default function BriefingRoomPage() {
             <img
               src={vegaPic}
               alt="Duty Chief Vega"
-              className="h-48 w-48 object-cover rounded shrink-0"
+              className="h-48 w-48 object-cover rounded shrink-0 cursor-pointer"
+              onClick={() => finalTimer !== null && setFinalTimer(0)}
             />
             <p>{chiefMessage}</p>
           </div>
@@ -405,6 +462,11 @@ export default function BriefingRoomPage() {
         <div className="mb-4 font-bold text-4xl text-red-600 text-center">
           Hours Remaining: {hours}
         </div>
+        {finalTimer !== null && (
+          <div className="mb-4 font-bold text-2xl text-center">
+            Decision Timer: {formatTime(finalTimer)}
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {remaining.map((s) => {
             const used = revealed[s.id];
@@ -422,7 +484,7 @@ export default function BriefingRoomPage() {
                 </AspectRatio>
                 <h2 className="text-lg font-bold">{s.name}</h2>
                 <p className="text-sm">{s.background}</p>
-                {!questioned && (
+                {hours <= 0 && !questioned && (
                   <button
                     onClick={() => handleQuestion(s.id)}
                     className="px-2 py-1 bg-red-600 text-white rounded"
@@ -468,10 +530,19 @@ export default function BriefingRoomPage() {
         </div>
         {questioned && (
           <div className="mt-6 flex flex-col md:flex-row gap-4">
-            <button className="flex-1 px-6 py-4 bg-red-600 text-white rounded text-xl">
+            <button
+              className="flex-1 px-6 py-4 bg-red-600 text-white rounded text-xl"
+              onClick={() => setArrestChoice(questioned)}
+            >
               Arrest {remaining.find((s) => s.id === questioned)?.name}
             </button>
-            <button className="flex-1 px-6 py-4 bg-green-600 text-white rounded text-xl">
+            <button
+              className="flex-1 px-6 py-4 bg-green-600 text-white rounded text-xl"
+              onClick={() => {
+                const other = remaining.find((s) => s.id !== questioned);
+                if (other) setArrestChoice(other.id);
+              }}
+            >
               Arrest {remaining.find((s) => s.id !== questioned)?.name}
             </button>
           </div>
