@@ -382,7 +382,6 @@ export default function BriefingRoomPage() {
   }
 
   if (eliminated) {
-    const eliminatedName = suspects.find((s) => s.id === eliminated)?.name;
     const remaining = suspects.filter((s) => s.id !== eliminated);
     return (
       <div className="min-h-screen bg-white text-gray-900 p-8">
@@ -400,10 +399,8 @@ export default function BriefingRoomPage() {
             <p>{chiefMessage}</p>
           </div>
         )}
-        <VictimCard onSecretClick={() => {}} />
-        <div className="p-4 border rounded-md mb-6">
-          You have eliminated {eliminatedName}. Vega grants you six extra hours
-          to follow up on any revealed clues.
+        <div className="mb-6">
+          <VictimCard onSecretClick={() => {}} />
         </div>
         <div className="mb-4 font-bold text-4xl text-red-600 text-center">
           Hours Remaining: {hours}
@@ -520,6 +517,9 @@ export default function BriefingRoomPage() {
                   onClick={() => {
                     setEliminated(s.id);
                     setHours(6);
+                    setChiefMessage(
+                      `Alright, good work ruling out ${s.name}. That narrows our field. I'll give you six more hours to chase down the threads you've uncovered — use them wisely.`,
+                    );
                   }}
                   className="px-2 py-1 bg-blue-600 text-white rounded"
                 >
