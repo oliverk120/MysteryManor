@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import coverPic from "../pics/breakingnews.png";
 import grahamPic from "../pics/grahamsteele.png";
@@ -196,6 +196,7 @@ export default function BriefingRoomPage() {
   const [finalTimer, setFinalTimer] = useState<number | null>(null);
   const [arrestChoice, setArrestChoice] = useState<string | null>(null);
   const [finalOutcome, setFinalOutcome] = useState<string | null>(null);
+  const vegaRef = useRef<HTMLImageElement | null>(null);
   const stageIdx =
     stage === 0 ? 0 : stage === 1 ? 1 : eliminated ? 4 : chiefConsulted ? 3 : 2;
 
@@ -222,6 +223,12 @@ export default function BriefingRoomPage() {
       );
     }
   }, [eliminated, hours, questioned]);
+
+  useEffect(() => {
+    if (hours === 0 && chiefMessage) {
+      vegaRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [hours, chiefMessage]);
 
   useEffect(() => {
     if (finalTimer === null || finalTimer <= 0) return;
@@ -300,7 +307,7 @@ export default function BriefingRoomPage() {
     setChiefMessage(
       `Ok great, we've brought in ${simpleName} for questioning and have learned a lot more. Cath, I need you to review the facts of the two suspects in detail and make a decision on who we should arrest... I will weigh your decision against the evidence you've gathered so far and if I agree with your assessment, we will arrest the suspect and you win the dessert!`,
     );
-    setFinalTimer(10);
+    setFinalTimer(null);
     setArrestChoice(null);
   };
 
@@ -361,6 +368,7 @@ export default function BriefingRoomPage() {
         <StageBreadcrumb current={1} onNavigate={setStage} />
         <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
           <img
+            ref={vegaRef}
             src={vegaPic}
             alt="Duty Chief Vega"
             className="h-48 w-48 object-cover rounded shrink-0"
@@ -448,6 +456,7 @@ export default function BriefingRoomPage() {
         {chiefMessage && (
           <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
             <img
+              ref={vegaRef}
               src={vegaPic}
               alt="Duty Chief Vega"
               className="h-48 w-48 object-cover rounded shrink-0 cursor-pointer"
@@ -532,7 +541,10 @@ export default function BriefingRoomPage() {
           <div className="mt-6 flex flex-col md:flex-row gap-4">
             <button
               className="flex-1 px-6 py-4 bg-red-600 text-white rounded text-xl"
-              onClick={() => setArrestChoice(questioned)}
+              onClick={() => {
+                setArrestChoice(questioned);
+                setFinalTimer(10);
+              }}
             >
               Arrest {remaining.find((s) => s.id === questioned)?.name}
             </button>
@@ -540,7 +552,10 @@ export default function BriefingRoomPage() {
               className="flex-1 px-6 py-4 bg-green-600 text-white rounded text-xl"
               onClick={() => {
                 const other = remaining.find((s) => s.id !== questioned);
-                if (other) setArrestChoice(other.id);
+                if (other) {
+                  setArrestChoice(other.id);
+                  setFinalTimer(10);
+                }
               }}
             >
               Arrest {remaining.find((s) => s.id !== questioned)?.name}
@@ -561,6 +576,7 @@ export default function BriefingRoomPage() {
         {chiefMessage && (
           <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
             <img
+              ref={vegaRef}
               src={vegaPic}
               alt="Duty Chief Vega"
               className="h-48 w-48 object-cover rounded shrink-0"
@@ -618,6 +634,7 @@ export default function BriefingRoomPage() {
       {chiefMessage && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
           <img
+            ref={vegaRef}
             src={vegaPic}
             alt="Duty Chief Vega"
             className="h-48 w-48 object-cover rounded shrink-0"
