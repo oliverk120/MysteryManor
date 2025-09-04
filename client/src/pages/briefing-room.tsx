@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import coverPic from "../pics/breakingnews.png";
 import grahamPic from "../pics/grahamsteele.png";
@@ -150,13 +150,14 @@ function StageBreadcrumb({
   );
 }
 
-function VictimCard() {
+function VictimCard({ onSecretClick }: { onSecretClick: () => void }) {
   return (
     <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full border-2 border-gray-400 p-4 rounded">
       <img
         src={grahamPic}
         alt="Graham Steele"
-        className="h-48 w-48 object-cover rounded shrink-0"
+        className="h-48 w-48 object-cover rounded shrink-0 cursor-pointer"
+        onClick={onSecretClick}
       />
       <div className="flex-1">
         <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
@@ -194,6 +195,30 @@ export default function BriefingRoomPage() {
   }>({ clues: [], followUps: [] });
   const stageIdx =
     stage === 0 ? 0 : stage === 1 ? 1 : eliminated ? 4 : chiefConsulted ? 3 : 2;
+
+  const [timeLeft, setTimeLeft] = useState(30 * 60);
+
+  useEffect(() => {
+    if (stage === 1) {
+      setTimeLeft(30 * 60);
+    }
+  }, [stage]);
+
+  useEffect(() => {
+    if (stage !== 1 || timeLeft <= 0) return;
+    const timer = setInterval(() => {
+      setTimeLeft((t) => (t > 0 ? t - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [stage, timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
 
   const handleInvestigate = (id: string) => {
     if (hours <= 0) return;
@@ -331,7 +356,7 @@ export default function BriefingRoomPage() {
             </p>
           </div>
         </div>
-        <VictimCard />
+        <VictimCard onSecretClick={() => setTimeLeft(0)} />
         <div className="flex justify-center">
           <button
             onClick={() => {
@@ -340,9 +365,16 @@ export default function BriefingRoomPage() {
                 "Alright Detective, you have 12 hours to investigate these suspects. I expect a report at the end with your findings!",
               );
             }}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md"
+            disabled={timeLeft > 0}
+            className={`px-6 py-3 rounded-md ${
+              timeLeft > 0
+                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                : "bg-blue-600 text-white"
+            }`}
           >
-            Show Suspects
+            {timeLeft > 0
+              ? `Show Suspects (${formatTime(timeLeft)})`
+              : "Show Suspects"}
           </button>
         </div>
       </div>
@@ -368,7 +400,7 @@ export default function BriefingRoomPage() {
             <p>{chiefMessage}</p>
           </div>
         )}
-        <VictimCard />
+        <VictimCard onSecretClick={() => {}} />
         <div className="p-4 border rounded-md mb-6">
           You have eliminated {eliminatedName}. Vega grants you six extra hours
           to follow up on any revealed clues.
@@ -468,7 +500,7 @@ export default function BriefingRoomPage() {
             <p>{chiefMessage}</p>
           </div>
         )}
-        <VictimCard />
+        <VictimCard onSecretClick={() => {}} />
         <div className="mb-6">Select a suspect to eliminate:</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {suspects.map((s) => {
@@ -522,7 +554,7 @@ export default function BriefingRoomPage() {
           <p>{chiefMessage}</p>
         </div>
       )}
-      <VictimCard />
+      <VictimCard onSecretClick={() => {}} />
       {hours <= 0 && !chiefConsulted && (
         <div className="flex justify-center mb-4">
           <button
