@@ -14,6 +14,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "../components/ui/breadcrumb";
+import NoirTitle from "@/components/noir-title";
 
 const casefileClasses =
   "bg-amber-50 border-2 border-amber-200 p-4 rounded-sm shadow-md space-y-2";
@@ -626,11 +627,13 @@ export default function BriefingRoomPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 p-8">
-      <header className="border-b-4 border-blue-600 pb-4 mb-6">
-        <h1 className="text-4xl font-bold">Briefing Room</h1>
-      </header>
-      <StageBreadcrumb current={stageIdx} onNavigate={setStage} />
+    <div className="min-h-screen bg-white text-gray-900">
+      <NoirTitle small />
+      <div className="p-8">
+        <header className="border-b-4 border-blue-600 pb-4 mb-6">
+          <h1 className="text-4xl font-bold">Briefing Room</h1>
+        </header>
+        <StageBreadcrumb current={stageIdx} onNavigate={setStage} />
       {chiefMessage && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
           <img
@@ -687,6 +690,7 @@ export default function BriefingRoomPage() {
           );
         })}
       </div>
+    </div>
     </div>
   );
 }

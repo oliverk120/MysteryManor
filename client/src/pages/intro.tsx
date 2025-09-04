@@ -1,5 +1,6 @@
 import { Target } from "lucide-react";
 import { useLocation } from "wouter";
+import NoirTitle from "@/components/noir-title";
 
 export default function CaseFilePage() {
   const [, setLocation] = useLocation();
@@ -15,6 +16,7 @@ export default function CaseFilePage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
+      <NoirTitle subtitle="A night of passion… and murder." />
       <div className="max-w-2xl mx-auto p-6 space-y-8">
         <header className="border-b-4 border-blue-600 pb-4">
           <h1 className="text-3xl font-bold">CASE FILE: OMITB-001</h1>
