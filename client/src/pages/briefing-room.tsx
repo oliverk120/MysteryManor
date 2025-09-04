@@ -192,7 +192,8 @@ export default function BriefingRoomPage() {
     clues: number[];
     followUps: number[];
   }>({ clues: [], followUps: [] });
-  const stageIdx = stage === 0 ? 0 : stage === 1 ? 1 : eliminated ? 4 : chiefConsulted ? 3 : 2;
+  const stageIdx =
+    stage === 0 ? 0 : stage === 1 ? 1 : eliminated ? 4 : chiefConsulted ? 3 : 2;
 
   const handleInvestigate = (id: string) => {
     if (hours <= 0) return;
@@ -321,10 +322,12 @@ export default function BriefingRoomPage() {
               Your task this evening: (1) get a working timeline, (2) identify a
               primary suspect for initial pressure, (3) flag any exculpatory
               info so we don’t lock in too early. Deputy Oliver will manage
-              materials and take you to the evidence room to show you what we've recovered from the scene.
+              materials and take you to the evidence room to show you what we've
+              recovered from the scene. Once you've had a chance to look over
+              the evidence, you can start questioning the suspects.
             </p>
             <p>
-              Questions can wait until after you review the packet. Oh and Detective... if you solve the case, you get the dessert!
+              Oh and Detective... if you solve the case, you get the dessert!
             </p>
           </div>
         </div>
@@ -370,7 +373,9 @@ export default function BriefingRoomPage() {
           You have eliminated {eliminatedName}. Vega grants you six extra hours
           to follow up on any revealed clues.
         </div>
-        <div className="mb-4 font-bold text-4xl text-red-600 text-center">Hours Remaining: {hours}</div>
+        <div className="mb-4 font-bold text-4xl text-red-600 text-center">
+          Hours Remaining: {hours}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {remaining.map((s) => {
             const used = revealed[s.id];
@@ -453,16 +458,16 @@ export default function BriefingRoomPage() {
           <h1 className="text-4xl font-bold">Briefing Room</h1>
         </header>
         <StageBreadcrumb current={stageIdx} onNavigate={setStage} />
-      {chiefMessage && (
-        <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
-          <img
-            src={vegaPic}
-            alt="Duty Chief Vega"
-            className="h-48 w-48 object-cover rounded shrink-0"
-          />
-          <p>{chiefMessage}</p>
-        </div>
-      )}
+        {chiefMessage && (
+          <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded flex gap-4 items-start">
+            <img
+              src={vegaPic}
+              alt="Duty Chief Vega"
+              className="h-48 w-48 object-cover rounded shrink-0"
+            />
+            <p>{chiefMessage}</p>
+          </div>
+        )}
         <VictimCard />
         <div className="mb-6">Select a suspect to eliminate:</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -528,7 +533,9 @@ export default function BriefingRoomPage() {
           </button>
         </div>
       )}
-      <div className="mb-4 font-bold text-4xl text-red-600 text-center">Hours Remaining: {hours}</div>
+      <div className="mb-4 font-bold text-4xl text-red-600 text-center">
+        Hours Remaining: {hours}
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {suspects.map((s) => {
           const used = revealed[s.id];
