@@ -89,10 +89,10 @@ const suspects: Suspect[] = [
     background:
       "Knew the Steele family since Graham was a kid; took pride in the property. Recently fired after cost-cutting. Quick temper, fiercely loyal until he feels disrespected.",
     clues: [
+      "Anger trail: Texts to his foreman after the firing: ‘He’ll regret this’ + dropped map pin for the side gate.",
       "Back-gate know-how: Service gate left propped with his signature wooden wedge; the camera covering that gate was unplugged the previous afternoon (he serviced that zone that day).",
       "Boot-print & soil match: Partial work-boot print by the patio; soil residue matches his slow-release fertilizer blend.",
       "Access exploit: The old remote gate opener (supposedly returned) pings the system at 6:12 a.m. murder morning—someone used a device linked to Marco’s former serial.",
-      "Anger trail: Texts to his foreman after the firing: ‘He’ll regret this’ + dropped map pin for the side gate.",
       "How-to searches: His phone history shows YouTube/Google queries on disabling backyard cams and ‘bypass ring power’ the day before.",
       "Partner alibi + meter: Partner places him home from 9 p.m.; smart-meter spike ~6:00 a.m. consistent with using power tools in his garage.",
       "No blood on tools: Missing pruning shears found downstream show plant residue only, no blood.",
@@ -150,6 +150,27 @@ function StageBreadcrumb({
   );
 }
 
+function VictimCard() {
+  return (
+    <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full border-2 border-gray-400 p-4 rounded">
+      <img
+        src={grahamPic}
+        alt="Graham Steele"
+        className="h-48 w-48 object-cover rounded shrink-0"
+      />
+      <div className="flex-1">
+        <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
+        <p className="text-sm">
+          Graham Steele — 39, CEO & co-founder of boutique design firm Steele &
+          Nayar; affluent, meticulous, and status-minded with a polished public
+          image. Privately controlling and schedule-driven, he often got into
+          disagreements with those closest to him.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function BriefingRoomPage() {
   const [stage, setStage] = useState(0);
   const [hours, setHours] = useState(12);
@@ -179,10 +200,15 @@ export default function BriefingRoomPage() {
     if (!suspect) return;
     const used = revealed[id];
     if (used.length >= suspect.clues.length) return;
-    const remaining = suspect.clues
-      .map((_, idx) => idx)
-      .filter((idx) => !used.includes(idx));
-    const nextIdx = remaining[Math.floor(Math.random() * remaining.length)];
+    let nextIdx: number;
+    if (used.length === 0) {
+      nextIdx = 0;
+    } else {
+      const remaining = suspect.clues
+        .map((_, idx) => idx)
+        .filter((idx) => idx !== 0 && !used.includes(idx));
+      nextIdx = remaining[Math.floor(Math.random() * remaining.length)];
+    }
     setRevealed({ ...revealed, [id]: [...used, nextIdx] });
     setHours(hours - 1);
   };
@@ -302,20 +328,7 @@ export default function BriefingRoomPage() {
             </p>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
-          <img
-            src={grahamPic}
-            alt="Graham Steele"
-            className="h-48 w-48 object-cover rounded shrink-0"
-          />
-          <div className="flex-1">
-            <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
-            <p className="text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
-            </p>
-          </div>
-        </div>
+        <VictimCard />
         <div className="flex justify-center">
           <button
             onClick={() => {
@@ -352,25 +365,12 @@ export default function BriefingRoomPage() {
             <p>{chiefMessage}</p>
           </div>
         )}
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
-          <img
-            src={grahamPic}
-            alt="Graham Steele"
-            className="h-48 w-48 object-cover rounded shrink-0"
-          />
-          <div className="flex-1">
-            <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
-            <p className="text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
-            </p>
-          </div>
-        </div>
+        <VictimCard />
         <div className="p-4 border rounded-md mb-6">
           You have eliminated {eliminatedName}. Vega grants you six extra hours
           to follow up on any revealed clues.
         </div>
-        <div className="mb-4 font-semibold">Hours Remaining: {hours}</div>
+        <div className="mb-4 font-bold text-4xl text-red-600 text-center">Hours Remaining: {hours}</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {remaining.map((s) => {
             const used = revealed[s.id];
@@ -463,20 +463,7 @@ export default function BriefingRoomPage() {
           <p>{chiefMessage}</p>
         </div>
       )}
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
-          <img
-            src={grahamPic}
-            alt="Graham Steele"
-            className="h-48 w-48 object-cover rounded shrink-0"
-          />
-          <div className="flex-1">
-            <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
-            <p className="text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
-            </p>
-          </div>
-        </div>
+        <VictimCard />
         <div className="mb-6">Select a suspect to eliminate:</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {suspects.map((s) => {
@@ -530,20 +517,7 @@ export default function BriefingRoomPage() {
           <p>{chiefMessage}</p>
         </div>
       )}
-      <div className="flex flex-col md:flex-row gap-6 mb-6 items-start w-full">
-        <img
-          src={grahamPic}
-          alt="Graham Steele"
-          className="h-48 w-48 object-cover rounded shrink-0"
-        />
-        <div className="flex-1">
-          <h2 className="text-xl font-bold">Graham Steele - Victim</h2>
-          <p className="text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-            facilisi. Praesent vitae nulla nec dolor aliquet ullamcorper.
-          </p>
-        </div>
-      </div>
+      <VictimCard />
       {hours <= 0 && !chiefConsulted && (
         <div className="flex justify-center mb-4">
           <button
@@ -554,7 +528,7 @@ export default function BriefingRoomPage() {
           </button>
         </div>
       )}
-      <div className="mb-4 font-semibold">Hours Remaining: {hours}</div>
+      <div className="mb-4 font-bold text-4xl text-red-600 text-center">Hours Remaining: {hours}</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {suspects.map((s) => {
           const used = revealed[s.id];
